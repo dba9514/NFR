@@ -1,3 +1,5 @@
+using System.ComponentModel.DataAnnotations;
+
 namespace MyApplication.Models.Orders;
 
 
@@ -37,11 +39,25 @@ public class OrderItemModel
 
 public enum OrderLineTypes
 {
+    //Using this custom attribute for displaying enums in the UI easily.
+    [Display(Name = "Repair Window")]
     RepairWindow,
+    
+    [Display(Name = "Install Dehumidifier")]
     InstallDehumidifier,
+    
+    [Display(Name = "Install Door Locks")]
     InstallDoorLocks,
+    
+    [Display(Name = "Install Fan")]
     InstallFan,
+    
+    [Display(Name = "Paint Room")]
     PaintRoom,
+    
+    [Display(Name = "Install Flooring")]
     InstallFlooring,
+    
+    [Display(Name = "Repair Plumbing")]
     RepairPlumbing
 }
