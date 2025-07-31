@@ -16,10 +16,10 @@ public class OrderItemModel
     public OrderLineTypes LineType { get; set; }
     public string Details { get; set; }
     public int Quantity { get; set; }
-    public decimal IndividualPrice { get; set; }
-    public decimal TotalPrice => Quantity * IndividualPrice;
+    public double IndividualPrice { get; set; }
+    public double TotalPrice => Quantity * IndividualPrice;
     
-    public OrderItemModel(int id, OrderLineTypes lineType, string details, int quantity, decimal individualPrice)
+    public OrderItemModel(int id, OrderLineTypes lineType, string details, int quantity, double individualPrice)
     {
         Id = id;
         LineType = lineType;
@@ -39,5 +39,9 @@ public enum OrderLineTypes
 {
     RepairWindow,
     InstallDehumidifier,
-    InstallDoorLocks
+    InstallDoorLocks,
+    InstallFan,
+    PaintRoom,
+    InstallFlooring,
+    RepairPlumbing
 }

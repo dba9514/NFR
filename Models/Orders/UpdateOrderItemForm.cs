@@ -8,10 +8,10 @@ public class UpdateOrderItemForm
     public OrderLineTypes LineType { get; set; }
     public string Details { get; set; } = string.Empty;
     public int Quantity { get; set; }
-    public decimal IndividualPrice { get; set; }
-    public decimal TotalPrice => Quantity * IndividualPrice;
+    public double IndividualPrice { get; set; }
+    public double TotalPrice => Quantity * IndividualPrice;
     
-    public UpdateOrderItemForm(int id, OrderLineTypes lineType, string details, int quantity, decimal individualPrice)
+    public UpdateOrderItemForm(int id, OrderLineTypes lineType, string details, int quantity, double individualPrice)
     {
         Id = id;
         LineType = lineType;
