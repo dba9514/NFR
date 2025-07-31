@@ -1,0 +1,48 @@
+﻿
+@* Generic confirmation dialog component that can be customized for different confirmation scenarios *@
+<MudDialog>
+    <DialogContent>
+        <MudText>@ContentText</MudText>
+    </DialogContent>
+
+    @* Action buttons section with Cancel and Submit options *@
+    <DialogActions>
+        <MudButton OnClick="Cancel">Cancel</MudButton>
+        <MudButton Color="@ConfirmColor" Variant="Variant.Filled" OnClick="Submit">@ConfirmButtonText</MudButton>
+    </DialogActions>
+</MudDialog>
+
+@code {
+
+    /// <summary>
+    /// Reference to the parent dialog instance for controlling dialog state
+    /// Marked as cascade parameter to receive from parent context
+    /// </summary>
+    [CascadingParameter] IMudDialogInstance MudDialog { get; set; } = default!;
+
+    /// <summary>
+    /// The message to display in the confirmation dialog
+    /// </summary>
+    [Parameter] public string ContentText { get; set; } = default!;
+
+    /// <summary>
+    /// Text to display on the confirmation button
+    /// Defaults to "Submit" if not provided
+    /// </summary>
+    [Parameter] public string ConfirmButtonText { get; set; } = "Submit";
+
+    /// <summary>
+    /// Text to display on the confirmation button
+    /// Defaults to "Cancel" if not provided
+    /// </summary>
+    [Parameter] public string CancelButtonText { get; set; } = "Cancel";
+
+    /// <summary>
+    /// Color theme for the confirmation button
+    /// Defaults to Primary if not specified
+    /// </summary>
+    [Parameter] public Color ConfirmColor { get; set; } = Color.Primary;
+
+    void Submit() => MudDialog.Close(DialogResult.Ok(true));
+    void Cancel() => MudDialog.Cancel();
+}

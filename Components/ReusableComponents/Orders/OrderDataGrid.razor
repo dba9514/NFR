@@ -3,7 +3,9 @@
 @using MyApplication.Components.ReusableComponents.Common.DataGrids
 @using MyApplication.Utilities
 @using MyApplication.Components.ReusableComponents.Common.Buttons
+@using MyApplication.Services.Dialogs
 @using MyApplication.Services.Orders
+@inject INfrDialogService DialogService
 @inject IOrdersService OrdersService
 
 <BaseDataGrid ReadOnly="true" Class="mt-2" Title="@Title" TItem="OrderItemModel" Items="@Order.Items" Height="55vh">
@@ -68,21 +70,19 @@
 
         if (updatedOrder.IsError) return;
         Order = updatedOrder.Value;
-
-
-
-
-
     }
 
     private async Task DeleteOrderItem(OrderItemModel model)
     {
-        Order.Items.Remove(model);
-        var updatedOrder = await OrdersService.UpdateOrderAsync(Order);
+        var confirmed = await DialogService.OpenConfirmDialog("Delete Line Item", "Are you sure you want to delete this item?");
+        if (confirmed)
+        {
+            Order.Items.Remove(model);
+            var updatedOrder = await OrdersService.UpdateOrderAsync(Order);
 
-        if (updatedOrder.IsError) return;
-        Order = updatedOrder.Value;
-
+            if (updatedOrder.IsError) return;
+            Order = updatedOrder.Value;
+        }
     }
 
 
