@@ -25,9 +25,9 @@
 
 @if (CurrentOrder != null)
 {
-    <MudButton Style="display: block;" Variant="Variant.Filled" Color="Color.Primary">Add Line</MudButton>
+    <MudButton Style="display: block;" Variant="Variant.Filled" Color="Color.Primary" OnClick="OnAddLineClicked">Add Line</MudButton>
     <MudPaper>
-        <OrderDataGrid Order="@CurrentOrder"/>
+        <OrderDataGrid Title="@($"Order Lines for Order # {CurrentOrder.OrderNumber}")" Order="@CurrentOrder"/>
     </MudPaper>
 }
 
@@ -36,8 +36,7 @@
     private int _orderNumber = 0;
     private string? _errors = null;
     private OrderModel? CurrentOrder { get; set; } = null;
-
-
+    
     private async Task LoadOrderAsync()
     {
 
@@ -52,6 +51,20 @@
         {
             CurrentOrder = order.Value;
         }
+
+    }
+
+    private async Task OnAddLineClicked()
+    {
+        var newItem = await OrderService.OpenCreateOrderItemDialogAsync();
+
+        if (newItem is null || CurrentOrder is null) return;
+        
+        CurrentOrder.Items.Add(newItem.ToModel());
+
+        var updatedOrder = await OrderService.UpdateOrderAsync(CurrentOrder);
+        if (updatedOrder.IsError) _errors = updatedOrder.Errors[0].Description;
+        else CurrentOrder = updatedOrder.Value;
 
     }
     

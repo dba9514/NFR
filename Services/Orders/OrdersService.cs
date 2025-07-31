@@ -24,6 +24,30 @@ public class OrdersService(IDialogService dialogService): IOrdersService
         MockData.Orders.Add(request);
         return request;
     }
+    
+    public async Task<CreateOrderItemForm?> OpenCreateOrderItemDialogAsync()
+    {
+        var dialogOptions = new DialogOptions
+        {
+            CloseOnEscapeKey = false,
+            BackdropClick = false,
+            MaxWidth = MaxWidth.Large,
+            FullWidth = true,
+            CloseButton = false
+        };
+        
+        
+        
+        var dialog = await dialogService.ShowAsync<CreateOrderDialog>("Create Order Line Item", dialogOptions);
+        var result = await dialog.Result;
+
+        if (result is not null && !result.Canceled && result.Data is CreateOrderItemForm newItem)
+        {
+            return newItem;
+        }
+
+        return null;
+    }
 
     public async Task<UpdateOrderItemForm?> OpenUpdateOrderItemDialogAsync(UpdateOrderItemForm updateForm)
     {

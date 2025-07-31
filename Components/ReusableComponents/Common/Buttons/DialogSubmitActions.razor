@@ -1,4 +1,12 @@
 <div style="display: flex; justify-content: space-between; width: 100%">
+    <MudButton Color="Color.Secondary"
+               Style="margin-top: 8px;"
+               Variant="Variant.Filled"
+               Disabled="@IsLoading"
+               OnClick="@OnCancel">
+        @CancelText
+    </MudButton>
+
     <MudButton Variant="Variant.Filled"
                Style="margin-top: 8px;"
                Color="Color.Primary"
@@ -6,20 +14,12 @@
                OnClick="@OnConfirm">
         @if (IsLoading)
         {
-            <MudProgressCircular Indeterminate="true" Size="Size.Medium" Color="Color.Inherit" />
+            <MudProgressCircular Indeterminate="true" Size="Size.Medium" Color="Color.Inherit"/>
         }
         else
         {
             @ConfirmText
         }
-    </MudButton>
-
-    <MudButton Color="Color.Secondary"
-               Style="margin-top: 8px;"
-               Variant="Variant.Filled"
-               Disabled="@IsLoading"
-               OnClick="@OnCancel">
-        @CancelText
     </MudButton>
 </div>
 

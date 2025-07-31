@@ -10,5 +10,10 @@ public class CreateOrderItemForm
     public int Quantity { get; set; }
     public double IndividualPrice { get; set; }
     public double TotalPrice => Quantity * IndividualPrice;
+
+    public OrderItemModel ToModel()
+    {
+        return new OrderItemModel(Id, LineType, Details, Quantity, IndividualPrice);
+    }
     
 }
