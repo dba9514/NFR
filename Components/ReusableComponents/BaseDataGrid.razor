@@ -1,0 +1,135 @@
+@using System.Text
+@typeparam TItem
+@inject IJSRuntime JSRuntime
+
+<MudDataGrid Class="@Class" @ref="_dataGrid" Height="@Height" Elevation="0" T="TItem" Items="@Items" Groupable="true"
+             Filterable="true" MultiSelection="@MultiSelection"
+             GroupExpanded="true" Dense="true" EditMode="@EditMode" ReadOnly="@ReadOnly" EditTrigger="@EditTrigger"
+             SelectedItemChanged="@SelectedItemChanged"
+             CommittedItemChanges="@CommittedItemChanges"
+             QuickFilter="@EffectiveQuickFilter" LoadingProgressColor="Color.Tertiary">
+    <ToolBarContent>
+        <MudText Typo="Typo.h6">@Title</MudText>
+        @if (Downloadable)
+        {
+            <MudTooltip Text="Export to CSV">
+                <MudIconButton Icon="@Icons.Material.Filled.Download" OnClick="DownloadCsvAsync"/>
+            </MudTooltip>
+        }
+        <MudSpacer/>
+        <MudTextField @bind-Value="_searchString" Placeholder="Search" Adornment="Adornment.Start" Immediate="true"
+                      Variant="Variant.Outlined"
+                      Margin="Margin.Dense"
+                      AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0">
+        </MudTextField>
+    </ToolBarContent>
+    <Columns>
+        @ColumnsSection
+    </Columns>
+    <ChildRowContent>
+        @if (ChildRowSection is not null)
+        {
+            @ChildRowSection(context)
+        }
+
+    </ChildRowContent>
+    <PagerContent>
+        @Pagination
+    </PagerContent>
+</MudDataGrid>
+
+@*Local Script to click a link that initializes download in the browser*@
+<script>
+    function downloadFile(fileName, url) {
+        const link = document.createElement('a');
+        link.download = fileName;
+        link.href = url;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    }
+</script>
+
+@code {
+    [Parameter] public IEnumerable<TItem>? Items { get; set; }
+    
+    [Parameter] public required RenderFragment ColumnsSection { get; set; }
+    [Parameter] public RenderFragment<CellContext<TItem>>? ChildRowSection { get; set; }
+
+    [Parameter] public required RenderFragment Pagination { get; set; }
+
+    [Parameter] public required string Title { get; set; }
+
+    [Parameter] public string Class { get; set; } = string.Empty;
+
+    [Parameter] public bool MultiSelection { get; set; }
+
+    [Parameter] public DataGridEditMode EditMode { get; set; }
+    [Parameter] public DataGridEditTrigger EditTrigger { get; set; }
+
+    [Parameter] public bool ReadOnly { get; set; } = true;
+    [Parameter] public bool Downloadable { get; set; } = false;
+    [Parameter] public string Height { get; set; } = "65vh";
+
+    [Parameter] public EventCallback<TItem> CommittedItemChanges { get; set; }
+    [Parameter] public EventCallback<TItem> SelectedItemChanged { get; set; }
+
+    [Parameter] public Func<TItem, bool>? CustomQuickFilter { get; set; }
+    
+    private string _searchString = string.Empty;
+    private bool _loading = true;
+
+    private Func<TItem, bool> DefaultQuickFilter => x =>
+    {
+        if (string.IsNullOrWhiteSpace(_searchString))
+            return true;
+
+        return x.ToString()!.Contains(_searchString, StringComparison.OrdinalIgnoreCase);
+    };
+
+    private Func<TItem, bool> EffectiveQuickFilter => CustomQuickFilter ?? DefaultQuickFilter;
+
+    private MudDataGrid<TItem>? _dataGrid;
+
+    public async Task DownloadCsvAsync()
+    {
+        if (_dataGrid == null)
+        {
+            await JSRuntime.InvokeVoidAsync("console.error", "DataGrid is not initialized.");
+            return;
+        }
+
+        var csvBuilder = new StringBuilder();
+
+        // Adding column headers
+        var columnHeaders = _dataGrid.RenderedColumns
+            .Where(column => !string.IsNullOrEmpty(column.Title))
+            .Select(column => column.Title);
+        csvBuilder.AppendLine(string.Join(",", columnHeaders));
+
+        // Adding rows
+        foreach (var item in _dataGrid.FilteredItems)
+        {
+            var rowValues = new List<string>();
+            foreach (var column in _dataGrid.RenderedColumns)
+            {
+                if (!string.IsNullOrEmpty(column.PropertyName))
+                {
+                    var property = typeof(TItem).GetProperty(column.PropertyName);
+                    var value = property?.GetValue(item)?.ToString() ?? string.Empty;
+                    rowValues.Add(value);
+                }
+            }
+
+            csvBuilder.AppendLine(string.Join(",", rowValues));
+        }
+
+        // Convert to byte array and trigger download
+        var fileName = $"{Title.Replace(" ", "_")}_Export.csv";
+        var bytes = Encoding.UTF8.GetBytes(csvBuilder.ToString());
+        var base64 = Convert.ToBase64String(bytes);
+        var url = $"data:text/csv;base64,{base64}";
+        await JSRuntime.InvokeVoidAsync("downloadFile", fileName, url);
+    }
+
+}
