@@ -27,7 +27,7 @@ Before running the project, ensure you have the following:
 To get started, clone this repository from GitHub:
 
 ```bash
-git clone https://github.com/dba9514/NFR/new/master?filename=README.md
+git clone https://github.com/dba9514/NFR
 cd NFR
 ```
 
