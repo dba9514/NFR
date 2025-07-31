@@ -11,9 +11,4 @@
     <PackageReference Include="ErrorOr" Version="2.0.1" />
     <PackageReference Include="MudBlazor" Version="8.*" />
   </ItemGroup>
-
-
-  <ItemGroup>
-    <Folder Include="Services\Orders\" />
-  </ItemGroup>
 </Project>

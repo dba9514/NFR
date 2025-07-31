@@ -35,6 +35,13 @@ public class OrderItemModel
         return new UpdateOrderItemForm(id: Id, lineType: LineType, details: Details, quantity: Quantity, individualPrice: IndividualPrice);
     }
     
+    //For searching on
+    public override string ToString()
+    {
+        return $"Id: {Id}, LineType: {LineType}, Details: {Details}, Quantity: {Quantity}, IndividualPrice: {IndividualPrice:C}, TotalPrice: {TotalPrice:C}";
+    }
+
+    
 }
 
 public enum OrderLineTypes
