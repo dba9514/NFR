@@ -27,18 +27,21 @@
                     </MudItem>
                     <MudItem xs="12" sm="4">
                         <MudNumericField T="int" Label="Quantity"
+                                         HideSpinButtons="true"
                                          Variant="Variant.Outlined" @bind-Value="CreateOrderItemForm.Quantity"
                                          For="@(() => CreateOrderItemForm.Quantity)"
                                          Immediate="true"/>
                     </MudItem>
                     <MudItem xs="12" sm="4">
                         <MudNumericField T="double" Label="Price Each"
+                                         HideSpinButtons="true"
                                          Variant="Variant.Outlined" @bind-Value="CreateOrderItemForm.IndividualPrice"
                                          For="@(() => CreateOrderItemForm.IndividualPrice)"
                                          Immediate="true"/>
                     </MudItem>
                     <MudItem xs="12" sm="4">
                         <MudNumericField T="double" Label="Total"
+                                         HideSpinButtons="true"
                                          Variant="Variant.Outlined" Value="@CreateOrderItemForm.TotalPrice"
                                          Disabled="true"/>
                     </MudItem>
@@ -68,8 +71,10 @@
         await _form.Validate();
         if (_form.IsValid)
         {
-            
+            _isDisabled = true;
+            await Task.Delay(300);
             MudDialog.Close(DialogResult.Ok(CreateOrderItemForm));
+            _isDisabled = false;
         }
     }
 }

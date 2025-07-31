@@ -11,8 +11,9 @@
     <MudNumericField
         T="int"
         Variant="Variant.Outlined"
-        @bind-Value="@_orderNumber"
         Label="Order Number"
+        HideSpinButtons="true"
+        @bind-Value="@OrderNumber"
     />
     <MudButton
         OnClick="LoadOrderAsync"
@@ -21,7 +22,11 @@
         Load Order
     </MudButton>
 </div>
-<ErrorsAlert ErrorMessage="@_errors"/>
+@if (Loading)
+{
+    <MudProgressLinear Indeterminate="true"/>
+}
+<ErrorsAlert ErrorMessage="@Errors"/>
 
 @if (CurrentOrder != null)
 {
@@ -33,25 +38,27 @@
 
 
 @code {
-    private int _orderNumber = 0;
-    private string? _errors = null;
+    private int OrderNumber { get; set; } = 0;
+    private string? Errors { get; set; } = null;
+    private bool Loading { get; set; } = false;
     private OrderModel? CurrentOrder { get; set; } = null;
     
     private async Task LoadOrderAsync()
     {
-
-        var order = await OrderService.GetOrderByIdAsync(_orderNumber);
+        Loading = true;
+        await Task.Delay(600);
+        var order = await OrderService.GetOrderByIdAsync(OrderNumber);
         if (order.IsError)
         {
-            _errors = order.Errors[0].Description;
+            Errors = order.Errors[0].Description;
             CurrentOrder = null;
-
         }
         else
         {
             CurrentOrder = order.Value;
         }
 
+        Loading = false;
     }
 
     private async Task OnAddLineClicked()
@@ -63,7 +70,7 @@
         CurrentOrder.Items.Add(newItem.ToModel());
 
         var updatedOrder = await OrderService.UpdateOrderAsync(CurrentOrder);
-        if (updatedOrder.IsError) _errors = updatedOrder.Errors[0].Description;
+        if (updatedOrder.IsError) Errors = updatedOrder.Errors[0].Description;
         else CurrentOrder = updatedOrder.Value;
 
     }
