@@ -1,10 +1,12 @@
 using ErrorOr;
+using MudBlazor;
+using MyApplication.Components.ReusableComponents.Orders;
 using MyApplication.Models.Orders;
 using MyApplication.Utilities;
 
 namespace MyApplication.Services.Orders;
 
-public class OrdersService: IOrdersService
+public class OrdersService(IDialogService dialogService): IOrdersService
 {
     public async Task<ErrorOr<OrderModel>> GetOrderByIdAsync(int orderNumber)
     {
@@ -21,5 +23,33 @@ public class OrdersService: IOrdersService
         MockData.Orders.Remove(orderToUpdate);
         MockData.Orders.Add(request);
         return request;
+    }
+
+    public async Task<UpdateOrderItemForm?> OpenUpdateOrderItemDialogAsync(UpdateOrderItemForm updateForm)
+    {
+        var dialogOptions = new DialogOptions
+        {
+            CloseOnEscapeKey = false,
+            BackdropClick = false,
+            MaxWidth = MaxWidth.Large,
+            FullWidth = true,
+            CloseButton = false
+        };
+        
+
+        var parameters = new DialogParameters<UpdateOrderDialog>
+        {
+            { x => x.UpdateOrderItemForm, updateForm }
+        };
+        
+        var dialog = await dialogService.ShowAsync<UpdateOrderDialog>("Update Employee", parameters, dialogOptions);
+        var result = await dialog.Result;
+
+        if (result is not null && !result.Canceled && result.Data is UpdateOrderItemForm newItem)
+        {
+            return newItem;
+        }
+
+        return null;
     }
 }

@@ -8,5 +8,6 @@ public interface IOrdersService
     
     Task<ErrorOr<OrderModel>> GetOrderByIdAsync(int orderId);
     Task<ErrorOr<OrderModel>> UpdateOrderAsync(OrderModel request);
+    Task<UpdateOrderItemForm?> OpenUpdateOrderItemDialogAsync(UpdateOrderItemForm updateForm);
     
 }
