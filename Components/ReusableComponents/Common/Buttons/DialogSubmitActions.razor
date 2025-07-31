@@ -1,0 +1,41 @@
+<div style="display: flex; justify-content: space-between; width: 100%">
+    <MudButton Variant="Variant.Filled"
+               Style="margin-top: 8px;"
+               Color="Color.Primary"
+               Disabled="@IsLoading"
+               OnClick="@OnConfirm">
+        @if (IsLoading)
+        {
+            <MudProgressCircular Indeterminate="true" Size="Size.Medium" Color="Color.Inherit" />
+        }
+        else
+        {
+            @ConfirmText
+        }
+    </MudButton>
+
+    <MudButton Color="Color.Secondary"
+               Style="margin-top: 8px;"
+               Variant="Variant.Filled"
+               Disabled="@IsLoading"
+               OnClick="@OnCancel">
+        @CancelText
+    </MudButton>
+</div>
+
+@code {
+    /// <summary>Called when the user confirms the action (clicks Submit).</summary>
+    [Parameter] public EventCallback OnConfirm { get; set; }
+
+    /// <summary>Called when the user cancels the action.</summary>
+    [Parameter] public EventCallback OnCancel { get; set; }
+
+    /// <summary>Indicates whether a submission is currently in progress (disables buttons, shows spinner).</summary>
+    [Parameter] public bool IsLoading { get; set; }
+
+    /// <summary>Text label for the confirmation button.</summary>
+    [Parameter] public string ConfirmText { get; set; } = "Confirm";
+
+    /// <summary>Text label for the cancel button.</summary>
+    [Parameter] public string CancelText { get; set; } = "Cancel";
+}

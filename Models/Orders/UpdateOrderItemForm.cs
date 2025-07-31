@@ -1,7 +1,7 @@
 namespace MyApplication.Models.Orders;
 
 //This is a class to be bound to update forms
-// Additional validation / parameters could be associated directly with updates.
+//Additional validation / parameters could be associated directly with updates.
 public class UpdateOrderItemForm
 {
     public int Id { get; set; }
@@ -18,9 +18,15 @@ public class UpdateOrderItemForm
         Details = details;
         Quantity = quantity;
         IndividualPrice = individualPrice;
-    }
+    } 
     public UpdateOrderItemForm()
     {
         
     }
+
+    public OrderItemModel ToModel()
+    {
+        return new OrderItemModel(Id, LineType, Details, Quantity, IndividualPrice);
+    }
+    
 }
