@@ -3,7 +3,7 @@
 @using MyApplication.Utilities
 <MudDialog>
     <DialogContent>
-        <div style="min-height: 80vh; max-height: 80vh; display: flex; flex-direction: column;">
+        <div style="min-height: 60vh; max-height: 80vh; display: flex; flex-direction: column;">
             <MudForm @ref="_form" Model="@CreateOrderItemForm" Validation="_createOrderItemValidator.ValidateValue" Style="height: 100%">
                 <MudGrid style="height: 100%">
                     <MudItem xs="12">
@@ -35,6 +35,7 @@
                     <MudItem xs="12" sm="4">
                         <MudNumericField T="double" Label="Price Each"
                                          HideSpinButtons="true"
+                                         Format="C2"
                                          Variant="Variant.Outlined" @bind-Value="CreateOrderItemForm.IndividualPrice"
                                          For="@(() => CreateOrderItemForm.IndividualPrice)"
                                          Immediate="true"/>
@@ -42,6 +43,7 @@
                     <MudItem xs="12" sm="4">
                         <MudNumericField T="double" Label="Total"
                                          HideSpinButtons="true"
+                                         Format="C2"
                                          Variant="Variant.Outlined" Value="@CreateOrderItemForm.TotalPrice"
                                          Disabled="true"/>
                     </MudItem>

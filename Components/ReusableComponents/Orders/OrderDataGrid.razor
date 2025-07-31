@@ -26,10 +26,18 @@
         <PropertyColumn T="OrderItemModel" TProperty="int" Property="x => x.Quantity" Title="Quantity"/>
 
         @*INDIVIDUAL COST COLUMN*@
-        <PropertyColumn T="OrderItemModel" TProperty="double" Property="x => x.IndividualPrice" Title="Cost Each"/>
+        <TemplateColumn T="OrderItemModel" Title="Cost Each">
+            <CellTemplate>
+                @($"{context.Item.IndividualPrice.ToString("C2")}")
+            </CellTemplate>
+        </TemplateColumn>
 
         @*TOTAL COST COLUMN*@
-        <PropertyColumn T="OrderItemModel" TProperty="double" Property="x => x.TotalPrice" Title="Total Cost"/>
+        <TemplateColumn T="OrderItemModel" Title="Total Cost">
+            <CellTemplate>
+                @($"{context.Item.TotalPrice.ToString("C2")}")
+            </CellTemplate>
+        </TemplateColumn>
 
         @* Action Buttons*@
         <TemplateColumn T="OrderItemModel" Filterable="false" StickyRight="true">

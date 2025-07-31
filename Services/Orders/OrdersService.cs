@@ -31,9 +31,9 @@ public class OrdersService(IDialogService dialogService): IOrdersService
         {
             CloseOnEscapeKey = false,
             BackdropClick = false,
-            MaxWidth = MaxWidth.Large,
+            MaxWidth = MaxWidth.Medium,
             FullWidth = true,
-            CloseButton = false
+            CloseButton = true
         };
         
         
@@ -55,9 +55,9 @@ public class OrdersService(IDialogService dialogService): IOrdersService
         {
             CloseOnEscapeKey = false,
             BackdropClick = false,
-            MaxWidth = MaxWidth.Large,
+            MaxWidth = MaxWidth.Medium,
             FullWidth = true,
-            CloseButton = false
+            CloseButton = true
         };
         
 
