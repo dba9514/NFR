@@ -2,8 +2,14 @@ using MyApplication.Models.Orders;
 
 namespace MyApplication.Utilities;
 
+/// <summary>
+/// Provides mock data for testing purposes, including a list of predefined orders.
+/// </summary>
 public static class MockData
 {
+    /// <summary>
+    /// Gets or sets the list of mock orders used for testing purposes.
+    /// </summary>
     public static List<OrderModel> Orders { get; set; } = new()
     {
         new OrderModel()

@@ -1,10 +1,18 @@
 using FluentValidation;
+/// <summary>
+/// Validator for the <see cref="UpdateOrderItemForm"/> class.
+/// Ensures that the provided data meets the specified validation rules.
+/// </summary>
 
 namespace MyApplication.Models.Orders;
 
 public class UpdateOrderItemValidator : AbstractValidator<UpdateOrderItemForm>
 {
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="UpdateOrderItemValidator"/> class.
+    /// Defines the validation rules for the <see cref="UpdateOrderItemForm"/>.
+    /// </summary>
     public UpdateOrderItemValidator()
     {
         RuleFor(x => x.Details)
@@ -18,6 +26,9 @@ public class UpdateOrderItemValidator : AbstractValidator<UpdateOrderItemForm>
 
 
 
+    /// <summary>
+    /// Asynchronously validates a specific property on the <see cref="UpdateOrderItemForm"/> model.
+    /// </summary>
     public Func<object, string, Task<IEnumerable<string>>> ValidateValue => async (model, propertyName) =>
     {
         var result =
