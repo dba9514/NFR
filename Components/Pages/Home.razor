@@ -1,24 +1,59 @@
 ﻿@page "/"
 @using MyApplication.Components.ReusableComponents.Orders
+@using MyApplication.Services.Orders
+@using MyApplication.Components.ReusableComponents.Common.Alerts
+@using MyApplication.Models.Orders
+@inject IOrdersService OrderService
 
 <PageTitle>OrderLines</PageTitle>
 
 <div style="display: inline-flex; align-items: center; gap: 10px; margin-bottom: 25px;">
     <MudNumericField
-        Clearable="true"
         T="int"
         Variant="Variant.Outlined"
+        @bind-Value="@_orderNumber"
         Label="Order Number"
     />
     <MudButton
+        OnClick="LoadOrderAsync"
         Variant="Variant.Filled"
         Color="Color.Primary">
         Load Order
     </MudButton>
 </div>
+<ErrorsAlert ErrorMessage="@_errors"/>
 
-<MudButton Style="display: block;" Variant="Variant.Filled" Color="Color.Primary">Add Line</MudButton>
-<MudPaper>
-    <OrderDataGrid/>
-</MudPaper>
+@if (CurrentOrder != null)
+{
+    <MudButton Style="display: block;" Variant="Variant.Filled" Color="Color.Primary">Add Line</MudButton>
+    <MudPaper>
+        <OrderDataGrid Order="@CurrentOrder"/>
+    </MudPaper>
+}
 
+
+@code {
+    private int _orderNumber = 0;
+    private string? _errors = null;
+    private OrderModel? CurrentOrder { get; set; } = null;
+
+
+    private async Task LoadOrderAsync()
+    {
+
+        var order = await OrderService.GetOrderByIdAsync(_orderNumber);
+        if (order.IsError)
+        {
+            _errors = order.Errors[0].Description;
+            CurrentOrder = null;
+
+        }
+        else
+        {
+            CurrentOrder = order.Value;
+        }
+
+    }
+    
+
+}

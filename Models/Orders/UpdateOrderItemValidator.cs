@@ -10,11 +10,7 @@ public class UpdateOrderItemValidator : AbstractValidator<UpdateOrderItemForm>
         RuleFor(x => x.Details)
             .NotEmpty().WithMessage("Details is required.");
         RuleFor(x => x.Quantity)
-            .NotEmpty().WithMessage("Price is required.");
-        RuleFor(x => x.Quantity)
             .Must(x => x > 0).WithMessage("Quantity must be greater than 0.");
-        RuleFor(x => x.IndividualPrice)
-            .NotEmpty().WithMessage("Price is required.");
         RuleFor(x => x.IndividualPrice)
             .Must(x => x > 0).WithMessage("Price each must be greater than 0.");
     }

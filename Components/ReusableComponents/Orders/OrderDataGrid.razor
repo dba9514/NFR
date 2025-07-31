@@ -44,10 +44,9 @@
 </BaseDataGrid>
 
 @code {
-    
-    [Parameter] public OrderModel Order { get; set; } = MockData.Orders[0];
+
+    [Parameter] public OrderModel Order { get; set; } = new();
     [Parameter] public string Title { get; set; } = "Order Line Items";
-    private List<Error>? _errors;
     
     private async Task OpenUpdateOrderItemDialog(OrderItemModel model)
     {
@@ -77,6 +76,11 @@
 
     private async Task DeleteOrderItem(OrderItemModel model)
     {
+        Order.Items.Remove(model);
+        var updatedOrder = await OrdersService.UpdateOrderAsync(Order);
+
+        if (updatedOrder.IsError) return;
+        Order = updatedOrder.Value;
 
     }
 

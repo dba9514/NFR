@@ -1,0 +1,19 @@
+@if (ErrorMessage is not null)
+{
+    <MudAlert Severity="Severity.Error" ContentAlignment="HorizontalAlignment.Left" Dense="true" Elevation="0" NoIcon="true" ShowCloseIcon="true" CloseIconClicked="CloseMe">
+        <MudText Typo="Typo.body1">@ErrorMessage</MudText>
+    </MudAlert>
+}
+
+@code {
+
+    [Parameter] public string? ErrorMessage { get; set; }
+    [Parameter] public EventCallback<string?> ErrorMessageChanged { get; set; }
+    
+    private void CloseMe()
+    {
+        ErrorMessage = null;
+        ErrorMessageChanged.InvokeAsync(ErrorMessage);
+    }
+
+}
