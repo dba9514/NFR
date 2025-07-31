@@ -42,7 +42,7 @@ public class OrdersService(IDialogService dialogService): IOrdersService
             { x => x.UpdateOrderItemForm, updateForm }
         };
         
-        var dialog = await dialogService.ShowAsync<UpdateOrderDialog>("Update Employee", parameters, dialogOptions);
+        var dialog = await dialogService.ShowAsync<UpdateOrderDialog>("Update Order Line Item", parameters, dialogOptions);
         var result = await dialog.Result;
 
         if (result is not null && !result.Canceled && result.Data is UpdateOrderItemForm newItem)

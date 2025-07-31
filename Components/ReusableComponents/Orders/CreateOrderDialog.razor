@@ -1,7 +1,75 @@
-<h3>CreateOrderDialog</h3>
-
-
+@using MyApplication.Components.ReusableComponents.Common.Buttons
+@using MyApplication.Models.Orders
+@using MyApplication.Utilities
+<MudDialog>
+    <DialogContent>
+        <div style="min-height: 80vh; max-height: 80vh; display: flex; flex-direction: column;">
+            <MudForm @ref="_form" Model="@CreateOrderItemForm" Validation="_createOrderItemValidator.ValidateValue" Style="height: 100%">
+                <MudGrid style="height: 100%">
+                    <MudItem xs="12">
+                        <MudSelect T="OrderLineTypes"
+                                   @bind-Value="CreateOrderItemForm.LineType"
+                                   ToStringFunc="@(type => type.GetDisplayName())"
+                                   Label="Line Type"
+                                   Variant="Variant.Outlined">
+                            @foreach (OrderLineTypes lineType in Enum.GetValues(typeof(OrderLineTypes)))
+                            {
+                                <MudSelectItem Value="@lineType">@lineType.GetDisplayName()</MudSelectItem>
+                            }
+                        </MudSelect>
+                    </MudItem>
+                    
+                    <MudItem xs="12">
+                        <MudTextField T="string" Label="Details"
+                                      Variant="Variant.Outlined" @bind-Value="CreateOrderItemForm.Details"
+                                      For="@(() => CreateOrderItemForm.Details)"
+                                      Immediate="true" Lines="3"/>
+                    </MudItem>
+                    <MudItem xs="12" sm="4">
+                        <MudNumericField T="int" Label="Quantity"
+                                         Variant="Variant.Outlined" @bind-Value="CreateOrderItemForm.Quantity"
+                                         For="@(() => CreateOrderItemForm.Quantity)"
+                                         Immediate="true"/>
+                    </MudItem>
+                    <MudItem xs="12" sm="4">
+                        <MudNumericField T="double" Label="Price Each"
+                                         Variant="Variant.Outlined" @bind-Value="CreateOrderItemForm.IndividualPrice"
+                                         For="@(() => CreateOrderItemForm.IndividualPrice)"
+                                         Immediate="true"/>
+                    </MudItem>
+                    <MudItem xs="12" sm="4">
+                        <MudNumericField T="double" Label="Total"
+                                         Variant="Variant.Outlined" Value="@CreateOrderItemForm.TotalPrice"
+                                         Disabled="true"/>
+                    </MudItem>
+                </MudGrid>
+            </MudForm>
+        </div>
+    </DialogContent>
+    <DialogActions>
+        <DialogSubmitActions 
+            OnConfirm="@(async () => await SubmitForm())"
+            OnCancel="Cancel"
+            IsLoading="@_isDisabled"/>
+    </DialogActions>
+</MudDialog>
 
 @code {
+    [CascadingParameter] IMudDialogInstance MudDialog { get; set; }
+    private MudForm _form = new();
+    public CreateOrderItemForm CreateOrderItemForm { get; set; } = new();
+    private CreateOrderItemValidator _createOrderItemValidator = new();
+    private void Cancel() => MudDialog.Cancel();
+    private bool _isDisabled;
     
+    // FormSubmission
+    private async Task SubmitForm(CancellationToken cancellationToken = default)
+    {
+        await _form.Validate();
+        if (_form.IsValid)
+        {
+            
+            MudDialog.Close(DialogResult.Ok(CreateOrderItemForm));
+        }
+    }
 }
