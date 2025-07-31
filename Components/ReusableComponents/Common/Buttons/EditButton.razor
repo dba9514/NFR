@@ -1,0 +1,18 @@
+<MudTooltip ShowOnFocus="false" Text="@ToolTipText" Disabled="@ToolTipDisabled">
+    <MudIconButton
+        Variant="@Variant"
+        Color="@Color"
+        Size="@Size"
+        Icon="@Icons.Material.Filled.Edit"
+        Style="@Style"
+        OnClick="@OnClick"/>
+</MudTooltip>
+@code {
+    [Parameter] public Variant Variant { get; set; }
+    [Parameter] public string Style { get; set; } = string.Empty;
+    [Parameter] public Color Color { get; set; } = Color.Default;
+    [Parameter] [Category("Appearance")] public Size Size { get; set; }
+    [Parameter] public string ToolTipText { get; set; } = "Edit";
+    [Parameter] public bool ToolTipDisabled { get; set; } = false;
+    [Parameter] public EventCallback<MouseEventArgs> OnClick { get; set; }
+}
