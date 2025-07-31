@@ -66,12 +66,26 @@
         var newItem = await OrderService.OpenCreateOrderItemDialogAsync();
 
         if (newItem is null || CurrentOrder is null) return;
-        
+        newItem.Id = GenerateId();  //This would not be needed in a realistic scenario.
         CurrentOrder.Items.Add(newItem.ToModel());
 
         var updatedOrder = await OrderService.UpdateOrderAsync(CurrentOrder);
         if (updatedOrder.IsError) Errors = updatedOrder.Errors[0].Description;
         else CurrentOrder = updatedOrder.Value;
+
+    }
+
+    
+    private int GenerateId()
+    {
+        var highestNum = 0;
+        foreach (var item in CurrentOrder!.Items)
+        {
+            if (item.Id > highestNum) highestNum = item.Id;
+
+        }
+
+        return highestNum + 1;
 
     }
     

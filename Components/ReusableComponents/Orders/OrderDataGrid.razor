@@ -8,7 +8,7 @@
 @inject INfrDialogService DialogService
 @inject IOrdersService OrdersService
 
-<BaseDataGrid ReadOnly="true" Class="mt-2" Title="@Title" TItem="OrderItemModel" Items="@Order.Items" Height="55vh">
+<BaseDataGrid ReadOnly="true" Downloadable="true" Class="mt-2" Title="@Title" TItem="OrderItemModel" Items="@Order.Items" Height="55vh">
     <ColumnsSection>
         
         @*ID COLUMN*@
