@@ -1,0 +1,61 @@
+@using ErrorOr
+@using MyApplication.Models.Orders
+@using MyApplication.Components.ReusableComponents.Common.DataGrids
+@using MyApplication.Utilities
+@using MyApplication.Components.ReusableComponents.Common.Buttons
+
+<BaseDataGrid ReadOnly="true" Class="mt-2" Title="Patient Appointments" TItem="OrderItemModel" Items="@Order.Items" Height="55vh">
+    <ColumnsSection>
+
+        @*ID COLUMN*@
+        <PropertyColumn T="OrderItemModel" TProperty="int" Property="x => x.Id" Title="ID"/>
+
+        @*LINE TYPE COLUMN *@
+        <TemplateColumn T="OrderItemModel" Title="Line Type">
+            <CellTemplate>
+                @context.Item.LineType.GetDisplayName()
+            </CellTemplate>
+        </TemplateColumn>
+        
+        @*DETAILS COLUMN*@
+        <PropertyColumn T="OrderItemModel" TProperty="string" Property="x => x.Details" Title="Details"/>
+        
+        @*INDIVIDUAL COST COLUMN*@
+        <PropertyColumn T="OrderItemModel" TProperty="double" Property="x => x.IndividualPrice" Title="Cost Each"/>
+
+        @*TOTAL COST COLUMN*@
+        <PropertyColumn T="OrderItemModel" TProperty="double" Property="x => x.TotalPrice" Title="Total Cost"/>
+        
+
+        @* Action Buttons*@
+        <TemplateColumn T="OrderItemModel" Filterable="false" StickyRight="true">
+            <CellTemplate>
+                <MudItem Class="d-flex">
+                    <EditButton OnClick="@(() => OpenUpdateOrderItemDialog(context.Item))" ToolTipText="Update Order Item" size="Size.Medium"/>
+                    <DeleteButton OnClick="@(() => DeleteOrderItem(context.Item))" ToolTipText="Update Order Item" size="Size.Medium"/>
+                </MudItem>
+            </CellTemplate>
+        </TemplateColumn>
+    </ColumnsSection>
+    <Pagination>
+        <MudDataGridPager T="OrderItemModel" PageSizeOptions="new []{10,20,50,100}"/>
+    </Pagination>
+</BaseDataGrid>
+
+@code {
+    
+    [Parameter] public OrderModel Order { get; set; } = new();
+    private List<Error>? _errors;
+    
+    private async Task OpenUpdateOrderItemDialog(OrderItemModel model)
+    {
+
+    }
+
+    private async Task DeleteOrderItem(OrderItemModel model)
+    {
+
+    }
+
+
+}
