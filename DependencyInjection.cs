@@ -5,7 +5,7 @@ namespace MyApplication;
 public static class DependencyInjection
 {
     
-    private static IServiceCollection AddServices(this IServiceCollection services)
+    public static IServiceCollection AddServices(this IServiceCollection services)
     {
         services.AddTransient<IOrdersService, OrdersService>();
         return services;

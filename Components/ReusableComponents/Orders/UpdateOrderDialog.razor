@@ -37,12 +37,12 @@
                     <MudItem xs="12" sm="4">
                         <MudNumericField T="double" Label="Price Each"
                                          Variant="Variant.Outlined" @bind-Value="UpdateOrderItemForm.IndividualPrice"
-                                         For="@(() => UpdateOrderItemForm.Quantity)"
+                                         For="@(() => UpdateOrderItemForm.IndividualPrice)"
                                          Immediate="true"/>
                     </MudItem>
                     <MudItem xs="12" sm="4">
                         <MudNumericField T="double" Label="Total"
-                                         Variant="Variant.Outlined" @Value="@UpdateOrderItemForm.TotalPrice"
+                                         Variant="Variant.Outlined" Value="@UpdateOrderItemForm.TotalPrice"
                                          Disabled="true"/>
                     </MudItem>
                 </MudGrid>

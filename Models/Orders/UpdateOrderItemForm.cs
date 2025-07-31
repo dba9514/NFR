@@ -4,11 +4,11 @@ namespace MyApplication.Models.Orders;
 //Additional validation / parameters could be associated directly with updates.
 public class UpdateOrderItemForm
 {
-    public int Id { get; set; }
-    public OrderLineTypes LineType { get; set; }
+    public int Id { get; set; } = 0;
+    public OrderLineTypes LineType { get; set; } = OrderLineTypes.Default;
     public string Details { get; set; } = string.Empty;
-    public int Quantity { get; set; }
-    public double IndividualPrice { get; set; }
+    public int Quantity { get; set; } = 0;
+    public double IndividualPrice { get; set; } = 0.0;
     public double TotalPrice => Quantity * IndividualPrice;
     
     public UpdateOrderItemForm(int id, OrderLineTypes lineType, string details, int quantity, double individualPrice)

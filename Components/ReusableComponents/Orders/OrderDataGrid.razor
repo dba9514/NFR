@@ -3,6 +3,8 @@
 @using MyApplication.Components.ReusableComponents.Common.DataGrids
 @using MyApplication.Utilities
 @using MyApplication.Components.ReusableComponents.Common.Buttons
+@using MyApplication.Services.Orders
+@inject IOrdersService OrdersService
 
 <BaseDataGrid ReadOnly="true" Class="mt-2" Title="@Title" TItem="OrderItemModel" Items="@Order.Items" Height="55vh">
     <ColumnsSection>
@@ -49,6 +51,27 @@
     
     private async Task OpenUpdateOrderItemDialog(OrderItemModel model)
     {
+        var updatedItem = await OrdersService.OpenUpdateOrderItemDialogAsync(model.ToUpdateForm());
+        if (updatedItem is null) return;
+        var updatedModel = updatedItem.ToModel();
+        
+        var index = Order.Items.FindIndex(item => item.Id == updatedModel.Id);
+
+        if (index != -1)
+        {
+            // Replace the item at the found index with the updated model
+            Order.Items[index] = updatedModel;
+        }
+
+
+        var updatedOrder = await OrdersService.UpdateOrderAsync(Order);
+
+        if (updatedOrder.IsError) return;
+        Order = updatedOrder.Value;
+
+
+
+
 
     }
 

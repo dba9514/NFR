@@ -46,6 +46,7 @@ public class OrderItemModel
 
 public enum OrderLineTypes
 {
+    Default,
     //Using this custom attribute for displaying enums in the UI easily.
     [Display(Name = "Repair Window")]
     RepairWindow,
