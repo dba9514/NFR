@@ -1,6 +1,6 @@
 # Simple Order Management UI
 
-This project provides a minimal user interface to **add** and **update order items** efficiently. Built with **ASP.NET Core** using **Razor Pages** and **C#**, this project is light, fast, and easy to use.
+This project provides a minimal user interface to **add** and **update order items** efficiently. Built with **Blazor** using **Dotnet Core** and **C#**, this project is light, fast, and easy to use.
 
 ---
 
